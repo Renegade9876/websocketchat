@@ -1,0 +1,80 @@
+<!--
+
+    Copyright (c) 2014 Oracle and/or its affiliates. All rights reserved.
+
+    You may not modify, use, reproduce, or distribute this software except in
+    compliance with  the terms of the License at:
+    https://github.com/javaee/tutorial-examples/LICENSE.txt
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Renegade's Chat WebSocket</title>
+  <link rel="stylesheet" type="text/css" href="resources/css/default.css" />
+  <script type="text/javascript">
+  
+      var wsocket;
+      function connect() {
+          wsocket = new WebSocket("ws://localhost:8084/websocketchat/endpointchat");
+          wsocket.onopen 	= onOpen;
+          wsocket.onmessage = onMessage;
+          wsocket.onclose 	= onClose;
+          wsocket.onerror 	= onError;
+      }
+      
+      function pintarMensaje(mensaje){
+    	  if(mensaje!=null && mensaje!=""){
+        	  var mensajes = document.getElementById("mensajes").innerHTML;
+        	  mensaje = (mensajes!=null && mensajes!="" ? "<br/>"+mensaje : mensaje);
+        	  document.getElementById("mensajes").innerHTML = mensajes + mensaje;
+    	  }
+      }
+      
+      // He recibido un Mensaje
+      function onMessage(evt) {
+    	  pintarMensaje(evt.data);
+      }
+
+      function onOpen(evt) {
+    	  // Conexión abierta
+      }
+      
+      function onClose(evt) {
+    	  // Conexión cerrada
+      }
+
+      function onError(evt) {
+    	  // Conexión error
+      }
+      
+      // ENVIAR MENSAJE
+      function sendMessage() {
+    	  var mensaje = document.getElementById("mensaje").value;
+    	  if(mensaje!=null && mensaje!=""){
+    		  wsocket.send(mensaje);
+    	  }
+      }
+      
+      window.addEventListener("load", connect, false);
+  </script>
+</head>
+<body>
+    <h1>Renegade's Chat WebSocket</h1>
+    <table>
+        <tr>
+        	<td>
+        		<form id="formWebsocketChat">
+        			<input id="mensaje" type="text" value="" size="120"/>&nbsp;
+        			<input id="enviar" type="button" value="Enviar" onClick="javascript:sendMessage();"/>
+        		</form>
+        	</td>
+        </tr>
+        <tr>
+        	<td>Chat<br/>
+        		<div id="mensajes" style="border: 1px solid red; width: 800px;"></div>
+        	</td>
+        </tr>
+    </table>
+</body>
+</html>
